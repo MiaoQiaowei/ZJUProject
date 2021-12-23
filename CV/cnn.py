@@ -2,6 +2,10 @@
 import torch 
 import torch.nn as nn
 import torch.nn.functional as F
+from torch.utils.data import DataLoader,Dataset
+from torchvision import transforms
+from PIL import Image
+import os
 
 class head_block(nn.Module):
     def __init__(self, in_channel, out_channel):
@@ -85,6 +89,30 @@ class ResNet18(nn.Module):
         x = x.view(-1,512)
         x = self.fc(x)
         return x
+
+class Mnist(Dataset):
+    def __init__(self,path) -> None:
+        super().__init__()
+        self.data = []
+        for dir in os.listdir(path):
+            dir_path = f'{path}/{dir}'
+            for file_path in os.listdir(dir_path):
+                file_path = f'{dir_path}/{file_path}'
+                self.data.append(file_path)
+        self.trans = transforms.Compose([
+            transforms.ToTensor(),
+            transforms.Resize(224)
+        ])
+    
+    def __getitem__(self, index):
+        image = Image.open(self.data[index]).convert('RGB')
+        image = self.trans(image)
+        label = self.data[index][-5]
+        return image, int(label)
+    def __len__(self):
+        return len(self.data)
+                
+
 
 
 if __name__ == '__main__':

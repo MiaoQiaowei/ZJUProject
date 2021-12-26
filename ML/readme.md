@@ -6,7 +6,7 @@
 python run.py
 ```
 ## Result
-![天梯结果](result.png)
+![天梯结果](./result.png)
 
 ## Thanks
 [天池baseline](https://tianchi.aliyun.com/notebook-ai/detail?spm=5176.12586969.1002.3.1cd8593aazvh87&postId=95422)
